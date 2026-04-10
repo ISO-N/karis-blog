@@ -70,4 +70,16 @@ public class MemoryArticleService implements ArticleService {
 
         return null;
     }
+
+    @Override
+    public List<Article> findPublishedArticles(){
+        List<Article> articles = findAll();
+        List<Article> publishedArticles = new ArrayList<>();
+        for(Article article:articles){
+            if(article.getStatus().equals(ArticleStatus.PUBLISHED)){
+                publishedArticles.add(article);
+            }
+        }
+        return publishedArticles;
+    }
 }

@@ -7,4 +7,5 @@ import java.util.*;
 public interface ArticleService {
     List<Article> findAll();
     Article findById(String id);
+    List<Article> findPublishedArticles();
 }
