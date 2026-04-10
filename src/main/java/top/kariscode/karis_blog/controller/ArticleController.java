@@ -19,7 +19,7 @@ public class ArticleController {
 
     @GetMapping("/api/articles")
     public List<Article> getArticle() {
-       return articleService.findAll();
+       return articleService.findPublishedArticles();
     }
 
     @GetMapping("/api/articles/{id}")
