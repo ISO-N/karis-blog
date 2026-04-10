@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HealthController {
     // “健康检查”接口
-    @GetMapping("/ping")
+    @GetMapping("/api/ping")
     public String ping(){
         return "pong";
     }
