@@ -37,7 +37,7 @@ public class ArticleController {
     }
 
     @GetMapping("/api/admin/articles/{id}")
-    public ResponseEntity<Article> getArticle (String id){
+    public ResponseEntity<Article> getArticle (@PathVariable String id){
         Article article = articleService.findById(id);
         if(article==null){
             return ResponseEntity.notFound().build();

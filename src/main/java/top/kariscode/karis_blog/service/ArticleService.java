@@ -9,4 +9,5 @@ public interface ArticleService {
     Article findById(String id);
     List<Article> findPublishedArticles();
     Article findPublishedById(String id);
+    Article create(String title,String summary,String content);
 }

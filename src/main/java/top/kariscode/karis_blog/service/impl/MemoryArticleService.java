@@ -11,9 +11,10 @@ import java.util.List;
 
 @Service
 public class MemoryArticleService implements ArticleService {
-    @Override
-    public List<Article> findAll() {
 
+    List<Article> articles = new ArrayList<>();
+
+    public MemoryArticleService(){
         Article article1 = new Article();
         Article article2 = new Article();
         Article article3 = new Article();
@@ -45,12 +46,13 @@ public class MemoryArticleService implements ArticleService {
         article3.setCreatedAt(LocalDateTime.of(2026,4,30,10,10,30));
         article3.setUpdatedAt(LocalDateTime.of(2026,4,30,10,10,30));
 
-        List<Article> articles = new ArrayList<>();
-
         articles.add(article1);
         articles.add(article2);
         articles.add(article3);
+    }
 
+    @Override
+    public List<Article> findAll() {
         return articles;
     }
 
@@ -95,5 +97,26 @@ public class MemoryArticleService implements ArticleService {
             }
         }
         return null;
+    }
+
+    // 创建文章
+    @Override
+    public Article create(String title,String summary,String content){
+
+        Article article = new Article();
+        article.setTitle(title);
+        article.setSummary(summary);
+        article.setContent(content);
+
+        LocalDateTime now = LocalDateTime.now();
+        article.setCreatedAt(now);
+        article.setUpdatedAt(now);
+
+        article.setStatus(ArticleStatus.DRAFT);
+
+        article.setId(String.valueOf(articles.size()+1));
+
+        articles.add(article);
+        return article;
     }
 }
