@@ -82,4 +82,18 @@ public class MemoryArticleService implements ArticleService {
         }
         return publishedArticles;
     }
+
+    @Override
+    public Article findPublishedById(String id){
+        if(id==null){
+            return null;
+        }
+        List<Article> articles = findPublishedArticles();
+        for(Article article:articles){
+            if(article.getId().equals(id)){
+                return article;
+            }
+        }
+        return null;
+    }
 }

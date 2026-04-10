@@ -18,13 +18,13 @@ public class ArticleController {
     }
 
     @GetMapping("/api/articles")
-    public List<Article> getArticle() {
+    public List<Article> getPublishedArticle() {
        return articleService.findPublishedArticles();
     }
 
     @GetMapping("/api/articles/{id}")
-    public ResponseEntity<Article> findById(@PathVariable String id){
-        Article article = articleService.findById(id);
+    public ResponseEntity<Article> findPublishedById(@PathVariable String id){
+        Article article = articleService.findPublishedById(id);
         if(article==null){
             return ResponseEntity.notFound().build();
         }

@@ -8,4 +8,5 @@ public interface ArticleService {
     List<Article> findAll();
     Article findById(String id);
     List<Article> findPublishedArticles();
+    Article findPublishedById(String id);
 }
