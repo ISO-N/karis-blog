@@ -8,7 +8,6 @@ import top.kariscode.karis_blog.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 @RestController
 public class ArticleController {
@@ -35,5 +34,14 @@ public class ArticleController {
     @GetMapping("/api/admin/articles")
     public List<Article> getAllArticle(){
         return articleService.findAll();
+    }
+
+    @GetMapping("/api/admin/articles/{id}")
+    public ResponseEntity<Article> getArticle (String id){
+        Article article = articleService.findById(id);
+        if(article==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(article);
     }
 }
