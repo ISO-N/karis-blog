@@ -25,8 +25,8 @@ public class MemoryArticleService implements ArticleService {
         article1.setSummary("1");
         article1.setContent("1");
         article1.setStatus(ArticleStatus.valueOf("PUBLISHED"));
-        article1.setCreatedAt(LocalDateTime.of(2026,4,30,10,10,30));
-        article1.setUpdatedAt(LocalDateTime.of(2026,4,30,10,10,30));
+        article1.setCreatedAt(LocalDateTime.of(2026,4,1,10,10,30));
+        article1.setUpdatedAt(LocalDateTime.of(2026,4,1,10,10,30));
 
         // article2
         article2.setId("2");
@@ -34,8 +34,8 @@ public class MemoryArticleService implements ArticleService {
         article2.setSummary("2");
         article2.setContent("2");
         article2.setStatus(ArticleStatus.valueOf("PUBLISHED"));
-        article2.setCreatedAt(LocalDateTime.of(2026,4,30,10,10,30));
-        article2.setUpdatedAt(LocalDateTime.of(2026,4,30,10,10,30));
+        article2.setCreatedAt(LocalDateTime.of(2026,4,1,10,10,30));
+        article2.setUpdatedAt(LocalDateTime.of(2026,4,1,10,10,30));
 
         //article3
         article3.setId("3");
@@ -43,8 +43,8 @@ public class MemoryArticleService implements ArticleService {
         article3.setSummary("3");
         article3.setContent("3");
         article3.setStatus(ArticleStatus.valueOf("DRAFT"));
-        article3.setCreatedAt(LocalDateTime.of(2026,4,30,10,10,30));
-        article3.setUpdatedAt(LocalDateTime.of(2026,4,30,10,10,30));
+        article3.setCreatedAt(LocalDateTime.of(2026,4,1,10,10,30));
+        article3.setUpdatedAt(LocalDateTime.of(2026,4,1,10,10,30));
 
         articles.add(article1);
         articles.add(article2);
@@ -118,5 +118,19 @@ public class MemoryArticleService implements ArticleService {
 
         articles.add(article);
         return article;
+    }
+
+    // 根据文章id编辑文章
+    @Override
+    public Article update(String id, String title, String summary, String content) {
+        Article updated = findById(id);
+        if(updated == null){
+            return null;
+        }
+        updated.setTitle(title);
+        updated.setSummary(summary);
+        updated.setContent(content);
+        updated.setUpdatedAt(LocalDateTime.now());
+        return updated;
     }
 }

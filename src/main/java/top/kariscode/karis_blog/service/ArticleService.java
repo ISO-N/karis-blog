@@ -10,4 +10,5 @@ public interface ArticleService {
     List<Article> findPublishedArticles();
     Article findPublishedById(String id);
     Article create(String title,String summary,String content);
+    Article update(String id,String title,String summary,String content);
 }
