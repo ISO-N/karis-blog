@@ -67,4 +67,13 @@ public class ArticleController {
         }
         return ResponseEntity.ok(updated); //200
     }
+
+    // 删除文章
+    @DeleteMapping("/api/admin/articles/{id}")
+    ResponseEntity<Boolean> deleteById(@PathVariable String id){
+        if(articleService.deleteById(id)){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.notFound().build();
+    }
 }
