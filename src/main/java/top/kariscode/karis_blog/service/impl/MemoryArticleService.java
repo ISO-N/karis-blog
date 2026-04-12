@@ -12,6 +12,7 @@ import java.util.List;
 @Service
 public class MemoryArticleService implements ArticleService {
 
+    int count = 3;
     List<Article> articles = new ArrayList<>();
 
     public MemoryArticleService(){
@@ -114,7 +115,7 @@ public class MemoryArticleService implements ArticleService {
 
         article.setStatus(ArticleStatus.DRAFT);
 
-        article.setId(String.valueOf(articles.size()+1));
+        article.setId(String.valueOf(++count));
 
         articles.add(article);
         return article;
@@ -132,5 +133,19 @@ public class MemoryArticleService implements ArticleService {
         updated.setContent(content);
         updated.setUpdatedAt(LocalDateTime.now());
         return updated;
+    }
+
+    @Override
+    public boolean deleteById(String id) {
+        Article article = findById(id);
+        if(article == null){
+            return false;
+        }
+        articles.remove(article);
+        article = findById(id);
+        if(article == null){
+            return true;
+        }
+        return false;
     }
 }
