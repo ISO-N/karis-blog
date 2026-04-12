@@ -2,6 +2,8 @@ package top.kariscode.karis_blog.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import top.kariscode.karis_blog.dto.CreateArticleRequest;
+import top.kariscode.karis_blog.dto.UpdateArticleRequest;
 import top.kariscode.karis_blog.entity.Article;
 import top.kariscode.karis_blog.service.ArticleService;
 import org.springframework.http.ResponseEntity;
@@ -46,22 +48,26 @@ public class ArticleController {
 
     // 创建文章
     @PostMapping("/api/admin/articles")
-    public ResponseEntity<Article> createArticle(@RequestBody Article article){
+    public ResponseEntity<Article> createArticle(@RequestBody CreateArticleRequest request){
 
-        if(article == null||article.getTitle() ==null||article.getSummary()==null||article.getContent()==null||article.getTitle().isBlank()||article.getSummary().isBlank()||article.getContent().isBlank()){
+        if(isInvalidArticleInput(request == null ? null : request.getTitle(),
+                request == null ? null : request.getSummary(),
+                request == null ? null : request.getContent())){
             return ResponseEntity.badRequest().build();
         }
-        Article created = articleService.create(article.getTitle(),article.getSummary(),article.getContent());
+        Article created = articleService.create(request.getTitle(),request.getSummary(),request.getContent());
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     // 编辑文章
     @PutMapping("/api/admin/articles/{id}")
-    ResponseEntity<Article> updateArticle(@PathVariable String id,@RequestBody Article article){
-        if(article == null||article.getTitle() ==null||article.getSummary()==null||article.getContent()==null||article.getTitle().isBlank()||article.getSummary().isBlank()||article.getContent().isBlank()){
+    ResponseEntity<Article> updateArticle(@PathVariable String id,@RequestBody UpdateArticleRequest request){
+        if(isInvalidArticleInput(request == null ? null : request.getTitle(),
+                request == null ? null : request.getSummary(),
+                request == null ? null : request.getContent())){
             return ResponseEntity.badRequest().build(); //400
         }
-        Article updated = articleService.update(id,article.getTitle(),article.getSummary(), article.getContent());
+        Article updated = articleService.update(id,request.getTitle(),request.getSummary(), request.getContent());
         if(updated==null){
             return ResponseEntity.notFound().build(); //404
         }
@@ -93,5 +99,10 @@ public class ArticleController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(article);
+    }
+
+    private boolean isInvalidArticleInput(String title, String summary, String content) {
+        return title == null || summary == null || content == null
+                || title.isBlank() || summary.isBlank() || content.isBlank();
     }
 }
