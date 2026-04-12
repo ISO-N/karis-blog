@@ -54,4 +54,17 @@ public class ArticleController {
         Article created = articleService.create(article.getTitle(),article.getSummary(),article.getContent());
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
+
+    // 编辑文章
+    @PutMapping("/api/admin/articles/{id}")
+    ResponseEntity<Article> updateArticle(@PathVariable String id,@RequestBody Article article){
+        if(article == null||article.getTitle() ==null||article.getSummary()==null||article.getContent()==null||article.getTitle().isBlank()||article.getSummary().isBlank()||article.getContent().isBlank()){
+            return ResponseEntity.badRequest().build(); //400
+        }
+        Article updated = articleService.update(id,article.getTitle(),article.getSummary(), article.getContent());
+        if(updated==null){
+            return ResponseEntity.notFound().build(); //404
+        }
+        return ResponseEntity.ok(updated); //200
+    }
 }
