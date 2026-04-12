@@ -12,4 +12,6 @@ public interface ArticleService {
     Article create(String title,String summary,String content);
     Article update(String id,String title,String summary,String content);
     boolean deleteById(String id);
+    Article publish(String id);
+    Article unpublish(String id);
 }

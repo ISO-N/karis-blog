@@ -76,4 +76,22 @@ public class ArticleController {
         }
         return ResponseEntity.notFound().build();
     }
+
+    @PatchMapping("/api/admin/articles/{id}/publish")
+    ResponseEntity<Article> publish(@PathVariable String id){
+        Article article = articleService.publish(id);
+        if(article==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(article);
+    }
+
+    @PatchMapping("/api/admin/articles/{id}/unpublish")
+    ResponseEntity<Article> unpublish(@PathVariable String id){
+        Article article = articleService.unpublish(id);
+        if(article==null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(article);
+    }
 }

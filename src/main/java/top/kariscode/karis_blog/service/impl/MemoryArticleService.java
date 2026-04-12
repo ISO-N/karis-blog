@@ -148,4 +148,26 @@ public class MemoryArticleService implements ArticleService {
         }
         return false;
     }
+
+    @Override
+    public Article publish(String id) {
+        Article article = findById(id);
+        if(article == null){
+            return null;
+        }
+        article.setStatus(ArticleStatus.PUBLISHED);
+        article.setUpdatedAt(LocalDateTime.now());
+        return article;
+    }
+
+    @Override
+    public Article unpublish(String id) {
+        Article article = findById(id);
+        if(article == null){
+            return null;
+        }
+        article.setStatus(ArticleStatus.DRAFT);
+        article.setUpdatedAt(LocalDateTime.now());
+        return article;
+    }
 }
