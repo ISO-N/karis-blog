@@ -1,9 +1,18 @@
 package top.kariscode.karis_blog.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class CreateArticleRequest {
 
+    @NotBlank
+    @Size(max = 120)
     private String title;
+
+    @NotBlank
     private String summary;
+
+    @NotBlank
     private String content;
 
     public CreateArticleRequest() {

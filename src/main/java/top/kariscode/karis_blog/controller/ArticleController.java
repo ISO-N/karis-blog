@@ -1,5 +1,6 @@
 package top.kariscode.karis_blog.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import top.kariscode.karis_blog.dto.CreateArticleRequest;
@@ -48,25 +49,14 @@ public class ArticleController {
 
     // 创建文章
     @PostMapping("/api/admin/articles")
-    public ResponseEntity<Article> createArticle(@RequestBody CreateArticleRequest request){
-
-        if(isInvalidArticleInput(request == null ? null : request.getTitle(),
-                request == null ? null : request.getSummary(),
-                request == null ? null : request.getContent())){
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<Article> createArticle(@Valid @RequestBody CreateArticleRequest request){
         Article created = articleService.create(request.getTitle(),request.getSummary(),request.getContent());
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
     // 编辑文章
     @PutMapping("/api/admin/articles/{id}")
-    ResponseEntity<Article> updateArticle(@PathVariable String id,@RequestBody UpdateArticleRequest request){
-        if(isInvalidArticleInput(request == null ? null : request.getTitle(),
-                request == null ? null : request.getSummary(),
-                request == null ? null : request.getContent())){
-            return ResponseEntity.badRequest().build(); //400
-        }
+    ResponseEntity<Article> updateArticle(@PathVariable String id,@Valid @RequestBody UpdateArticleRequest request){
         Article updated = articleService.update(id,request.getTitle(),request.getSummary(), request.getContent());
         if(updated==null){
             return ResponseEntity.notFound().build(); //404
@@ -99,10 +89,5 @@ public class ArticleController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(article);
-    }
-
-    private boolean isInvalidArticleInput(String title, String summary, String content) {
-        return title == null || summary == null || content == null
-                || title.isBlank() || summary.isBlank() || content.isBlank();
     }
 }
