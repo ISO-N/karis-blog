@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import top.kariscode.karis_blog.dto.CreateArticleRequest;
 import top.kariscode.karis_blog.dto.UpdateArticleRequest;
 import top.kariscode.karis_blog.entity.Article;
+import top.kariscode.karis_blog.exception.NotFoundException;
 import top.kariscode.karis_blog.service.ArticleService;
 import org.springframework.http.ResponseEntity;
 
@@ -26,11 +27,7 @@ public class ArticleController {
 
     @GetMapping("/api/articles/{id}")
     public ResponseEntity<Article> findPublishedById(@PathVariable String id){
-        Article article = articleService.findPublishedById(id);
-        if(article==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(article);
+        return ResponseEntity.ok(requireArticle(articleService.findPublishedById(id)));
     }
 
     @GetMapping("/api/admin/articles")
@@ -40,11 +37,7 @@ public class ArticleController {
 
     @GetMapping("/api/admin/articles/{id}")
     public ResponseEntity<Article> getArticle (@PathVariable String id){
-        Article article = articleService.findById(id);
-        if(article==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(article);
+        return ResponseEntity.ok(requireArticle(articleService.findById(id)));
     }
 
     // 创建文章
@@ -58,36 +51,32 @@ public class ArticleController {
     @PutMapping("/api/admin/articles/{id}")
     ResponseEntity<Article> updateArticle(@PathVariable String id,@Valid @RequestBody UpdateArticleRequest request){
         Article updated = articleService.update(id,request.getTitle(),request.getSummary(), request.getContent());
-        if(updated==null){
-            return ResponseEntity.notFound().build(); //404
-        }
-        return ResponseEntity.ok(updated); //200
+        return ResponseEntity.ok(requireArticle(updated)); //200
     }
 
     // 删除文章
     @DeleteMapping("/api/admin/articles/{id}")
     ResponseEntity<Boolean> deleteById(@PathVariable String id){
-        if(articleService.deleteById(id)){
+        if(articleService.deleteById(id)) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.notFound().build();
+        throw new NotFoundException("文章不存在");
     }
 
     @PatchMapping("/api/admin/articles/{id}/publish")
     ResponseEntity<Article> publish(@PathVariable String id){
-        Article article = articleService.publish(id);
-        if(article==null){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(article);
+        return ResponseEntity.ok(requireArticle(articleService.publish(id)));
     }
 
     @PatchMapping("/api/admin/articles/{id}/unpublish")
     ResponseEntity<Article> unpublish(@PathVariable String id){
-        Article article = articleService.unpublish(id);
-        if(article==null){
-            return ResponseEntity.notFound().build();
+        return ResponseEntity.ok(requireArticle(articleService.unpublish(id)));
+    }
+
+    private Article requireArticle(Article article) {
+        if (article == null) {
+            throw new NotFoundException("文章不存在");
         }
-        return ResponseEntity.ok(article);
+        return article;
     }
 }

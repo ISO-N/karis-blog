@@ -5,14 +5,14 @@ import jakarta.validation.constraints.Size;
 
 public class CreateArticleRequest {
 
-    @NotBlank
-    @Size(max = 120)
+    @NotBlank(message = "标题不能为空")
+    @Size(max = 120, message = "标题长度不能超过120")
     private String title;
 
-    @NotBlank
+    @NotBlank(message = "摘要不能为空")
     private String summary;
 
-    @NotBlank
+    @NotBlank(message = "正文不能为空")
     private String content;
 
     public CreateArticleRequest() {
