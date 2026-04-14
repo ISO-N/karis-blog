@@ -17,14 +17,20 @@ public class ApiResponse<T> {
         this.data = data;
     }
 
+    // 静态工厂方法
+    // 用于创建成功响应
     public static <T> ApiResponse<T> success(T data) {
         return new ApiResponse<>(200, "success", data);
     }
 
+    // 静态工厂方法
+    // 用于创建创建响应
     public static <T> ApiResponse<T> created(T data) {
         return new ApiResponse<>(201, "created", data);
     }
 
+    // 静态工厂方法
+    // 用于创建错误响应
     public static <T> ApiResponse<T> error(int code, String message, T data) {
         return new ApiResponse<>(code, message, data);
     }
