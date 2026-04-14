@@ -1,15 +1,41 @@
 package top.kariscode.karis_blog.entity;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
+import jakarta.persistence.Table;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "articles")
 public class Article {
 
+    @Id
+    @Column(nullable = false, length = 36)
     private String id;
+
+    @Column(nullable = false, length = 120)
     private String title;
+
+    @Column(nullable = false, length = 255)
     private String summary;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
     private ArticleStatus status;
+
+    @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
+
+    @Lob
+    @Column(nullable = false)
     private String content;
 
     public void setId(String id){
