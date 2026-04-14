@@ -3,6 +3,7 @@ package top.kariscode.karis_blog.controller;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import top.kariscode.karis_blog.dto.ApiResponse;
 import top.kariscode.karis_blog.dto.CreateArticleRequest;
 import top.kariscode.karis_blog.dto.UpdateArticleRequest;
 import top.kariscode.karis_blog.entity.Article;
@@ -31,27 +32,27 @@ public class ArticleController {
     }
 
     @GetMapping("/api/admin/articles")
-    public List<Article> getAllArticle(){
-        return articleService.findAll();
+    public ResponseEntity<ApiResponse<List<Article>>> getAllArticle(){
+        return ResponseEntity.ok(ApiResponse.success(articleService.findAll()));
     }
 
     @GetMapping("/api/admin/articles/{id}")
-    public ResponseEntity<Article> getArticle (@PathVariable String id){
-        return ResponseEntity.ok(requireArticle(articleService.findById(id)));
+    public ResponseEntity<ApiResponse<Article>> getArticle (@PathVariable String id){
+        return ResponseEntity.ok(ApiResponse.success(requireArticle(articleService.findById(id))));
     }
 
     // 创建文章
     @PostMapping("/api/admin/articles")
-    public ResponseEntity<Article> createArticle(@Valid @RequestBody CreateArticleRequest request){
+    public ResponseEntity<ApiResponse<Article>> createArticle(@Valid @RequestBody CreateArticleRequest request){
         Article created = articleService.create(request.getTitle(),request.getSummary(),request.getContent());
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created(created));
     }
 
     // 编辑文章
     @PutMapping("/api/admin/articles/{id}")
-    ResponseEntity<Article> updateArticle(@PathVariable String id,@Valid @RequestBody UpdateArticleRequest request){
+    ResponseEntity<ApiResponse<Article>> updateArticle(@PathVariable String id,@Valid @RequestBody UpdateArticleRequest request){
         Article updated = articleService.update(id,request.getTitle(),request.getSummary(), request.getContent());
-        return ResponseEntity.ok(requireArticle(updated)); //200
+        return ResponseEntity.ok(ApiResponse.success(requireArticle(updated))); //200
     }
 
     // 删除文章
@@ -64,13 +65,13 @@ public class ArticleController {
     }
 
     @PatchMapping("/api/admin/articles/{id}/publish")
-    ResponseEntity<Article> publish(@PathVariable String id){
-        return ResponseEntity.ok(requireArticle(articleService.publish(id)));
+    ResponseEntity<ApiResponse<Article>> publish(@PathVariable String id){
+        return ResponseEntity.ok(ApiResponse.success(requireArticle(articleService.publish(id))));
     }
 
     @PatchMapping("/api/admin/articles/{id}/unpublish")
-    ResponseEntity<Article> unpublish(@PathVariable String id){
-        return ResponseEntity.ok(requireArticle(articleService.unpublish(id)));
+    ResponseEntity<ApiResponse<Article>> unpublish(@PathVariable String id){
+        return ResponseEntity.ok(ApiResponse.success(requireArticle(articleService.unpublish(id))));
     }
 
     private Article requireArticle(Article article) {
