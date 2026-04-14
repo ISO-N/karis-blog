@@ -1,6 +1,5 @@
 package top.kariscode.karis_blog.service.impl;
 
-import org.springframework.stereotype.Service;
 import top.kariscode.karis_blog.entity.Article;
 import top.kariscode.karis_blog.entity.ArticleStatus;
 import top.kariscode.karis_blog.service.ArticleService;
@@ -9,7 +8,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class MemoryArticleService implements ArticleService {
 
     int count = 3;
